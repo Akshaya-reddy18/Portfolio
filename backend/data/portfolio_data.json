@@ -1,0 +1,119 @@
+[
+{
+"type": "project",
+"title": "ResearchPilot AI",
+"tags": ["RAG", "LLM", "NLP", "AI Systems"],
+"stack": ["LLaMA-3.3-70B", "LangChain", "ChromaDB", "FastAPI", "React"],
+"description": "A scalable AI-powered research assistant that processes large volumes of documents using retrieval-augmented generation.",
+"impact": "Processed 1000+ documents and improved contextual response accuracy by 35%.",
+"details": "Built a RAG pipeline using semantic chunking and vector embeddings. Integrated LLaMA models for contextual generation and evaluated retrieval quality using precision-recall metrics.",
+"challenges": "Maintaining retrieval relevance and handling diverse document structures.",
+"solutions": "Optimized embedding strategies and semantic search pipelines.",
+"category": "AI Systems"
+},
+{
+"type": "project",
+"title": "PulseConnect",
+"tags": ["AI", "Healthcare", "Multi-Agent Systems", "Prediction"],
+"stack": ["Firebase", "Scikit-learn", "Python"],
+"description": "AI-driven blood demand forecasting and donor matching system.",
+"impact": "Reduced emergency response time by 40% and improved donor matching efficiency by 30%.",
+"details": "Designed a multi-agent system using real-time Firebase streams. Implemented ensemble regression models with hyperparameter tuning for accurate predictions.",
+"category": "AI + Healthcare"
+},
+{
+"type": "project",
+"title": "StartupConnect",
+"tags": ["Full Stack", "AI Matching", "Web Platform"],
+"stack": ["React", "TypeScript", "Supabase", "REST APIs"],
+"description": "A full-stack platform that connects users with relevant opportunities using AI-based matching.",
+"impact": "Improved relevant job-role matching by 25% for 100+ users.",
+"details": "Built role-based authentication and implemented similarity-based matching algorithms for personalized recommendations.",
+"category": "Full Stack"
+},
+{
+"type": "project",
+"title": "DevOps CI/CD Automation",
+"tags": ["DevOps", "CI/CD", "Automation"],
+"stack": ["Python", "GitHub Actions", "Docker", "Linux"],
+"description": "Automated CI/CD pipelines with integrated testing and monitoring.",
+"impact": "Improved deployment reliability and enabled early defect detection.",
+"details": "Integrated API validation scripts into CI/CD pipelines to ensure continuous system health and consistent deployments across environments.",
+"category": "DevOps"
+},
+{
+"type": "project",
+"title": "MarketNest",
+"tags": ["MERN", "Marketplace", "Automation"],
+"stack": ["MongoDB", "Express", "React", "Node.js", "Selenium"],
+"description": "A fashion marketplace platform with automated testing workflows.",
+"impact": "Ensured UI consistency and reliable user experience through automation.",
+"details": "Automated end-to-end user flows using Selenium WebDriver, covering form validation and navigation testing.",
+"category": "Full Stack"
+},
+{
+"type": "experience",
+"title": "Full-Stack Developer Intern",
+"company": "Nirvaha Wellness LLP",
+"duration": "Oct 2025 – Dec 2025",
+"details": "Developed full-stack applications using React, TypeScript, Node.js, and MongoDB. Built 10+ REST APIs with JWT authentication, reducing latency by 30% and improving security."
+},
+{
+"type": "experience",
+"title": "AI/ML Intern",
+"company": "Cothon Solutions",
+"duration": "Mar 2025 – May 2025",
+"details": "Built an XGBoost airfare prediction model achieving 98.76% R². Developed a CNN-based deepfake detection system with 84.67% accuracy and 0.91 ROC-AUC on 10,000+ images."
+},
+{
+"type": "experience",
+"title": "AI/ML Intern",
+"company": "Edunet Foundation (Microsoft, SAP & AICTE)",
+"duration": "Jan 2025 – Feb 2025",
+"details": "Developed SVM-based disease prediction models trained on 5000+ records achieving 85% accuracy. Built real-time dashboards using Streamlit."
+},
+{
+"type": "skill",
+"name": "Programming",
+"details": "Python, JavaScript, TypeScript, Java, C, SQL"
+},
+{
+"type": "skill",
+"name": "Machine Learning",
+"details": "Scikit-learn, XGBoost, TensorFlow, Keras, CNN, NLP, Ensemble Methods"
+},
+{
+"type": "skill",
+"name": "Data Analysis",
+"details": "Pandas, NumPy, Seaborn, Matplotlib, EDA, Statistical Analysis"
+},
+{
+"type": "skill",
+"name": "Web Development",
+"details": "React, Next.js, Node.js, Express, Django, REST APIs"
+},
+{
+"type": "skill",
+"name": "Databases",
+"details": "MongoDB, MySQL, Firebase, Supabase, ChromaDB"
+},
+{
+"type": "skill",
+"name": "DevOps & Tools",
+"details": "Git, GitHub Actions, Docker, Linux, Streamlit"
+},
+{
+"type": "skill",
+"name": "Core Concepts",
+"details": "Data Structures and Algorithms, OOP, System Design, Probability, Statistics, Distributed Systems"
+},
+{
+"type": "achievement",
+"title": "Hackathons & Certifications",
+"details": "Participant in Smart India Hackathon and national-level hackathons. HackerRank: Python (Gold), Java (Silver), C (Silver). NPTEL certified in Java and C."
+},
+{
+"type": "education",
+"details": "B.Tech in Computer Science (AI & ML), CGPA: 9.42, Vignan Institute of Technology and Science."
+}
+]
