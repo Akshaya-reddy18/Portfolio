@@ -16,7 +16,8 @@ export function useChat() {
   const [isLoading, setIsLoading] = useState(false);
   const [mode, setMode] = useState<Mode>('Engineer');
   const [followUps, setFollowUps] = useState<string[]>([]);
-  
+  const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:8000";
+
   const sendMessage = useCallback(async (text: string) => {
     if (!text.trim() || isLoading) return;
 
@@ -31,7 +32,7 @@ export function useChat() {
 
     try {
       // Connect to FastAPI backend
-      const response = await fetch('http://127.0.0.1:8000/chat', {
+      const response = await fetch(`${API_URL}/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: text, mode: mode.toLowerCase() }),
