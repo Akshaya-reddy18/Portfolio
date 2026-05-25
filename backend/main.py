@@ -19,10 +19,9 @@ async def lifespan(app: FastAPI):
     if not settings.GROQ_API_KEY:
         raise ValueError("CRITICAL ERROR: GROQ_API_KEY is missing. Please set it in your environment or .env file.")
 
-
     if not os.path.exists(settings.CHROMA_DB_DIR):
-        print("ChromaDB directory not found. Running initial ingestion...")
-        ingest_portfolio_data(str(PORTFOLIO_DATA_PATH))
+        os.makedirs(settings.CHROMA_DB_DIR, exist_ok=True)
+        print("ChromaDB directory not found. Skipping startup ingestion; use the ingest endpoint when needed.")
     else:
         print("Loaded vector DB")
     yield
