@@ -168,11 +168,11 @@ export function Hero() {
             {/* Cinematic Background Auras */}
             <motion.div 
               className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[550px] bg-primary/40 blur-[80px] rounded-full transition-all duration-700 ${isLoading ? 'opacity-100 scale-125 bg-primary/70' : 'opacity-80 scale-100'}`}
-              style={{ translateZ: -50, willChange: "transform, opacity" }}
+              style={{ transform: "translateZ(-50px)", willChange: "transform, opacity" }}
             />
             <motion.div 
               className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[500px] bg-accent/30 blur-[70px] rounded-full transition-all duration-700 ${isLoading ? 'opacity-100 scale-110 bg-accent/60' : 'opacity-70 scale-100'}`}
-              style={{ translateZ: -30, willChange: "transform, opacity" }}
+              style={{ transform: "translateZ(-30px)", willChange: "transform, opacity" }}
             />
 
             {/* Rotating Blurred Rings */}
@@ -180,18 +180,18 @@ export function Hero() {
               animate={{ rotate: 360 }}
               transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
               className={`absolute w-[440px] h-[440px] rounded-full border border-primary/30 border-t-primary border-l-transparent shadow-[0_0_30px_rgba(139,92,246,0.3)] transition-opacity duration-500 ${isLoading ? 'opacity-100' : 'opacity-60'}`}
-              style={{ translateZ: -10, willChange: "transform" }}
+              style={{ transform: "translateZ(-10px)", willChange: "transform" }}
             />
             <motion.div 
               animate={{ rotate: -360 }}
               transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
               className={`absolute w-[400px] h-[400px] rounded-full border border-accent/30 border-b-accent border-r-transparent shadow-[0_0_20px_rgba(45,212,191,0.3)] transition-opacity duration-500 ${isLoading ? 'opacity-100' : 'opacity-50'}`}
-              style={{ translateZ: 0, willChange: "transform" }}
+              style={{ transform: "translateZ(0px)", willChange: "transform" }}
             />
 
             {/* AI Processing Ping Overlay */}
             {isLoading && (
-              <div className="absolute inset-4 rounded-3xl border border-primary/50 animate-ping" style={{ animationDuration: '2s', translateZ: 10 }} />
+              <div className="absolute inset-4 rounded-3xl border border-primary/50 animate-ping" style={{ animationDuration: '2s', transform: 'translateZ(10px)' }} />
             )}
 
             {/* Glassmorphic Background Portal */}
@@ -223,7 +223,7 @@ export function Hero() {
               animate={{ rotate: 360 }}
               transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
               className="absolute inset-0 pointer-events-none"
-              style={{ translateZ: 50 }}
+              style={{ transform: "translateZ(50px)" }}
             >
               <div className={`absolute -top-6 left-1/2 w-2 h-2 bg-cyan-400 rounded-full shadow-[0_0_15px_#06b6d4] transition-transform duration-300 ${isLoading ? 'scale-150 animate-pulse' : ''}`} />
             </motion.div>
@@ -231,7 +231,7 @@ export function Hero() {
               animate={{ rotate: -360 }}
               transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
               className="absolute inset-0 pointer-events-none"
-              style={{ translateZ: 40 }}
+              style={{ transform: "translateZ(40px)" }}
             >
               <div className={`absolute bottom-12 -right-4 w-3 h-3 bg-purple-500 rounded-full shadow-[0_0_20px_#a855f7] transition-transform duration-300 ${isLoading ? 'scale-150 animate-pulse' : ''}`} />
             </motion.div>
