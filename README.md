@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Akshaya — AI Digital Twin
 
-## Getting Started
+This repository contains a Next.js frontend and a FastAPI backend that together implement Akshaya's AI-powered digital twin. The backend provides a retrieval-augmented generation (RAG) API backed by a vector store (Chroma) and a Groq LLM client.
 
-First, run the development server:
+## Quickstart (local)
+
+Backend (in its folder):
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cd backend
+python -m venv .venv        # optional: create venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+uvicorn main:app --reload
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Frontend (repo root):
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+cd src
+# install Node deps (npm/yarn/pnpm)
+npm install
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Open http://localhost:3000 to view the frontend and the chat UI which talks to the backend.
 
-## Learn More
+## Environment variables
 
-To learn more about Next.js, take a look at the following resources:
+- `GROQ_API_KEY` — Groq API key (backend)
+- `MODEL_NAME` — model id used by Groq client
+- `CHROMA_DB_DIR` — directory where Chroma persists data (defaults to `./chroma_db`)
+- `PORT` — backend port (defaults to `8000`)
+- `NEXT_PUBLIC_BACKEND_URL` — frontend base URL for the API
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Place backend variables in `backend/.env`. For production on Render, set the same variables in the Render service settings.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Docker / Production
 
-## Deploy on Vercel
+This project includes a `Dockerfile` for the backend to provide reproducible builds with native dependencies (SciPy / torch). Deploying to Render with Docker is recommended for reliability.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Deploying to Render (summary)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Push the `main` branch to GitHub.
+2. Create a Render Web Service and connect the repo; choose Docker or Python service.
+3. Add required environment variables in the Render dashboard.
+4. (Optional) Attach a Persistent Disk for `CHROMA_DB_DIR` if you want durable vector storage.
+
+## Notes
+
+- If you need a consistent female TTS voice across platforms, consider using a cloud TTS provider (Polly/Google/ElevenLabs) and stream audio to the client.
+- Keep `backend/venv`, `.next`, and `node_modules` out of Git — they are already ignored in `.gitignore`.
+
+---
+
+If you'd like, I can add a short `Contributing` section, CI config, or a `render.yaml` for Render infra-as-code.
