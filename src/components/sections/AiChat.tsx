@@ -77,16 +77,15 @@ const MessageBubble = React.memo(({ msg, isStreaming }: { msg: ChatMessage, isSt
                   ol: ({node, ...props}) => <ol className="list-decimal pl-4 space-y-1" {...props} />,
                   li: ({node, ...props}) => <li className="pl-1" {...props} />,
                   strong: ({node, ...props}) => <strong className="font-semibold text-foreground" {...props} />,
+                  pre: ({node, ...props}) => <pre className="bg-black/30 p-3 rounded-lg overflow-x-auto text-xs border border-white/10 mt-2 mb-2" {...props} />,
                   code: ({node, inline, className, children, ...props}: any) => {
                     const match = /language-(\w+)/.exec(className || '')
-                    return !inline ? (
-                      <pre className="bg-black/30 p-3 rounded-lg overflow-x-auto text-xs border border-white/10 mt-2 mb-2">
-                        <code className={className} {...props}>
-                          {children}
-                        </code>
-                      </pre>
-                    ) : (
+                    return inline ? (
                       <code className="bg-black/30 px-1.5 py-0.5 rounded text-xs text-primary/90" {...props}>
+                        {children}
+                      </code>
+                    ) : (
+                      <code className={className} {...props}>
                         {children}
                       </code>
                     )

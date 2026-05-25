@@ -60,7 +60,7 @@ const initialItems: FeedItem[] = [
 
 const mockUpdates = [
   "fix: resolved memory leak in vector store indexing",
-  "chore: updated OpenAI embeddings model to v3",
+  "chore: updated Groq embeddings model to v3",
   "docs: refined system architecture diagrams",
   "perf: optimized ChromaDB similarity search queries",
 ];

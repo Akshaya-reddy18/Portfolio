@@ -1,8 +1,8 @@
 import json
 import logging
 import asyncio
-from core.config import settings
-from services.vector_store import get_vector_store
+from backend.core.config import settings
+from backend.services.vector_store import get_vector_store
 from groq import AsyncGroq
 
 logging.basicConfig(level=logging.INFO)

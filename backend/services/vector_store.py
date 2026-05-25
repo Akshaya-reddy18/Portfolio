@@ -4,7 +4,7 @@ from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_chroma import Chroma
-from core.config import settings
+from backend.core.config import settings
 
 def get_vector_store():
     # Groq does not have a native embeddings API.
