@@ -37,14 +37,19 @@ Place backend variables in `backend/.env`. For production on Render, set the sam
 
 ## Docker / Production
 
-This project includes a `Dockerfile` for the backend to provide reproducible builds with native dependencies (SciPy / torch). Deploying to Render with Docker is recommended for reliability.
+This project includes a `Dockerfile` for the backend to provide reproducible builds with native dependencies (SciPy / torch). If you use Render, the simplest path is to deploy the backend as its own Python web service from the `backend` folder.
 
-## Deploying to Render (summary)
+## Deploying to Render (from scratch)
 
 1. Push the `main` branch to GitHub.
-2. Create a Render Web Service and connect the repo; choose Docker or Python service.
-3. Add required environment variables in the Render dashboard.
-4. (Optional) Attach a Persistent Disk for `CHROMA_DB_DIR` if you want durable vector storage.
+2. In Render, create a new Web Service from this repo.
+3. Set the root directory to `backend`.
+4. Use the build command `pip install -r requirements.txt`.
+5. Use the start command `uvicorn main:app --host 0.0.0.0 --port $PORT`.
+6. Make sure `GROQ_API_KEY`, `MODEL_NAME`, and any other backend env vars are set in Render.
+7. If you want persistent Chroma storage, attach a disk and point `CHROMA_DB_DIR` at it.
+
+The repo also includes [render.yaml](render.yaml), which defines the backend service with the correct root directory and Python version.
 
 ## Notes
 
