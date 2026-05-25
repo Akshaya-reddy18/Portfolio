@@ -7,9 +7,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import uvicorn
 
-from backend.services.rag import generate_chat_response_stream
-from backend.services.vector_store import ingest_portfolio_data
-from backend.core.config import settings
+from services.rag import generate_chat_response_stream
+from services.vector_store import ingest_portfolio_data
+from core.config import settings
 
 BACKEND_DIR = Path(__file__).resolve().parent
 PORTFOLIO_DATA_PATH = BACKEND_DIR / "data" / "portfolio_data.json"
