@@ -18,14 +18,44 @@ const MessageBubble = React.memo(({ msg, isStreaming }: { msg: ChatMessage, isSt
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(msg.content);
       // Optional: choose a voice
-      const voices = window.speechSynthesis.getVoices();
-      const femaleKeywords = ["female", "aria", "jenny", "zira", "samantha", "victoria", "karen", "moira"];
-      const preferred = voices.find(v => femaleKeywords.some(keyword => v.name.toLowerCase().includes(keyword))) || voices.find(v => v.name.includes("Google US English")) || voices[0];
-      if (preferred) utterance.voice = preferred;
+      const getVoicesAsync = () => new Promise<SpeechSynthesisVoice[]>((resolve) => {
+        const vs = window.speechSynthesis.getVoices();
+        if (vs && vs.length) return resolve(vs);
+        const handler = () => {
+          const loaded = window.speechSynthesis.getVoices();
+          if (loaded && loaded.length) {
+            window.speechSynthesis.removeEventListener('voiceschanged', handler as any);
+            return resolve(loaded);
+          }
+        };
+        window.speechSynthesis.addEventListener('voiceschanged', handler as any);
+        // fallback: resolve after short timeout with whatever is available
+        setTimeout(() => resolve(window.speechSynthesis.getVoices()), 700);
+      });
+
+      const pickFemaleVoice = (voicesList: SpeechSynthesisVoice[] | undefined) => {
+        if (!voicesList || voicesList.length === 0) return null;
+        const priority = ['samantha','zira','karen','victoria','jenny','aria','amy','emma','olivia','mia','susan','female','woman','google'];
+        for (const name of priority) {
+          const found = voicesList.find(v => v.name && v.name.toLowerCase().includes(name));
+          if (found) return found;
+        }
+        const en = voicesList.find(v => (v.lang || '').toLowerCase().startsWith('en'));
+        if (en) return en;
+        return voicesList[0];
+      };
+
+      (async () => {
+        const voices = await getVoicesAsync();
+        const preferred = pickFemaleVoice(voices);
+        if (preferred) utterance.voice = preferred;
+        // gentle pitch increase to sound more feminine if voice choice still neutral
+        utterance.pitch = utterance.pitch || 1.1;
+        window.speechSynthesis.speak(utterance);
+      })();
       
       utterance.onend = () => setIsPlaying(false);
       utterance.onerror = () => setIsPlaying(false);
-      window.speechSynthesis.speak(utterance);
       setIsPlaying(true);
     }
   };
@@ -189,11 +219,39 @@ export function AiChat() {
       if (lastMsg.role === 'ai' && lastMsg.content) {
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(lastMsg.content);
-        
-        const voices = window.speechSynthesis.getVoices();
-        const femaleKeywords = ["female", "aria", "jenny", "zira", "samantha", "victoria", "karen", "moira"];
-        const preferred = voices.find(v => femaleKeywords.some(keyword => v.name.toLowerCase().includes(keyword))) || voices.find(v => v.name.includes("Google US English")) || voices[0];
-        if (preferred) utterance.voice = preferred;
+        const getVoicesAsync = () => new Promise<SpeechSynthesisVoice[]>((resolve) => {
+          const vs = window.speechSynthesis.getVoices();
+          if (vs && vs.length) return resolve(vs);
+          const handler = () => {
+            const loaded = window.speechSynthesis.getVoices();
+            if (loaded && loaded.length) {
+              window.speechSynthesis.removeEventListener('voiceschanged', handler as any);
+              return resolve(loaded);
+            }
+          };
+          window.speechSynthesis.addEventListener('voiceschanged', handler as any);
+          setTimeout(() => resolve(window.speechSynthesis.getVoices()), 700);
+        });
+
+        const pickFemaleVoice = (voicesList: SpeechSynthesisVoice[] | undefined) => {
+          if (!voicesList || voicesList.length === 0) return null;
+          const priority = ['samantha','zira','karen','victoria','jenny','aria','amy','emma','olivia','mia','susan','female','woman','google'];
+          for (const name of priority) {
+            const found = voicesList.find(v => v.name && v.name.toLowerCase().includes(name));
+            if (found) return found;
+          }
+          const en = voicesList.find(v => (v.lang || '').toLowerCase().startsWith('en'));
+          if (en) return en;
+          return voicesList[0];
+        };
+
+        (async () => {
+          const voices = await getVoicesAsync();
+          const preferred = pickFemaleVoice(voices);
+          if (preferred) utterance.voice = preferred;
+          utterance.pitch = utterance.pitch || 1.05;
+          window.speechSynthesis.speak(utterance);
+        })();
 
         window.speechSynthesis.speak(utterance);
       }
