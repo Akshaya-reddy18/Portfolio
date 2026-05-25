@@ -37,7 +37,7 @@ Place backend variables in `backend/.env`. For production on Render, set the sam
 
 ## Docker / Production
 
-This project includes a `Dockerfile` for the backend to provide reproducible builds with native dependencies (SciPy / torch). If you use Render, the simplest path is to deploy the backend as its own Python web service from the `backend` folder.
+The backend requirements now pin CPU-only PyTorch so `sentence-transformers` does not pull a GPU build on Render. If you use Render, the simplest path is to deploy the backend as its own Python web service from the `backend` folder.
 
 ## Deploying to Render (from scratch)
 
