@@ -52,6 +52,18 @@
 "category": "Full Stack"
 },
 {
+  "type": "project",
+  "title": "Pizza Sales Analytics Dashboard",
+  "tags": ["Power BI", "Business Intelligence", "Data Analytics", "SQL"],
+  "stack": ["Power BI", "SQL Server", "Power Query", "DAX"],
+  "description": "Developed an interactive business intelligence dashboard to analyze pizza sales performance, customer purchasing trends, and revenue metrics.",
+  "impact": "Analyzed 50,000+ sales records and enabled data-driven decision making through KPI tracking and trend analysis.",
+  "details": "Imported and transformed sales data from SQL Server using Power Query. Designed interactive dashboards with KPI cards, revenue trends, category-wise sales analysis, top-selling pizzas, order patterns, and customer insights. Implemented DAX measures for revenue, average order value, total orders, and sales growth analysis.",
+  "challenges": "Handling data inconsistencies and optimizing dashboard performance for large datasets.",
+  "solutions": "Applied data cleaning and transformation techniques in Power Query and created optimized DAX calculations for faster reporting.",
+  "category": "Data Analytics"
+},
+{
 "type": "experience",
 "title": "Full-Stack Developer Intern",
 "company": "Nirvaha Wellness LLP",

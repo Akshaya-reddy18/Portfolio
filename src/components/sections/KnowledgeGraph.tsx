@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Network, Search, Database, LayoutTemplate, Cpu, Server, ExternalLink } from "lucide-react";
+import { personalData } from "@/lib/data";
 
 interface GraphNode {
   id: string;
@@ -15,50 +16,111 @@ interface GraphNode {
   related: string[];
 }
 
-const nodes: GraphNode[] = [
-  { id: "ai", label: "AI/ML", category: "domain", icon: Cpu, x: 50, y: 25, description: "Deep Learning, LLMs, RAG, Computer Vision", related: ["rag", "python", "research", "pulse"] },
-  { id: "backend", label: "Backend", category: "domain", icon: Server, x: 20, y: 50, description: "FastAPI, Node.js, Microservices, Scalability", related: ["python", "db", "docker", "market"] },
-  { id: "frontend", label: "Frontend", category: "domain", icon: LayoutTemplate, x: 80, y: 50, description: "React, Next.js, Framer Motion, Tailwind", related: ["react", "startup", "market"] },
+const baseNodes: GraphNode[] = [
+  { id: "ai", label: "AI/ML", category: "domain", icon: Cpu, x: 50, y: 25, description: "Deep Learning, LLMs, RAG, Computer Vision", related: ["rag", "python"] },
+  { id: "backend", label: "Backend", category: "domain", icon: Server, x: 20, y: 50, description: "FastAPI, Node.js, Microservices, Scalability", related: ["python", "db", "docker"] },
+  { id: "frontend", label: "Frontend", category: "domain", icon: LayoutTemplate, x: 80, y: 50, description: "React, Next.js, Framer Motion, Tailwind", related: ["react"] },
   
-  { id: "python", label: "Python", category: "skill", icon: Network, x: 35, y: 35, description: "Data engineering, API development, AI scripting", related: ["ai", "backend", "devops", "pulse"] },
-  { id: "db", label: "Databases", category: "domain", icon: Database, x: 20, y: 80, description: "PostgreSQL, MongoDB, ChromaDB, Redis", related: ["backend", "market"] },
-  { id: "react", label: "React & Next.js", category: "skill", icon: Network, x: 80, y: 80, description: "Building complex UIs with hooks and suspense", related: ["frontend", "startup"] },
-  { id: "rag", label: "LangChain/RAG", category: "skill", icon: Network, x: 50, y: 80, description: "Advanced vector retrieval and agent logic", related: ["ai", "research"] },
+  { id: "python", label: "Python", category: "skill", icon: Network, x: 35, y: 35, description: "Data engineering, API development, AI scripting", related: ["ai", "backend"] },
+  { id: "db", label: "Databases", category: "domain", icon: Database, x: 20, y: 80, description: "PostgreSQL, MongoDB, ChromaDB, Redis", related: ["backend"] },
+  { id: "react", label: "React & Next.js", category: "skill", icon: Network, x: 80, y: 80, description: "Building complex UIs with hooks and suspense", related: ["frontend"] },
+  { id: "rag", label: "LangChain/RAG", category: "skill", icon: Network, x: 50, y: 80, description: "Advanced vector retrieval and agent logic", related: ["ai"] },
   { id: "docker", label: "Docker & CI/CD", category: "skill", icon: Network, x: 15, y: 20, description: "Containerization and automated deployment pipelines", related: ["backend", "devops"] },
-
-  { id: "research", label: "ResearchPilot AI", category: "project", icon: Network, x: 65, y: 35, description: "A scalable AI-powered research assistant using RAG.", related: ["ai", "rag"] },
-  { id: "pulse", label: "PulseConnect", category: "project", icon: Network, x: 65, y: 15, description: "AI-driven blood demand forecasting and donor matching.", related: ["ai", "python"] },
-  { id: "startup", label: "StartupConnect", category: "project", icon: Network, x: 90, y: 65, description: "Full-stack platform with AI-based matching.", related: ["frontend", "react"] },
-  { id: "devops", label: "DevOps CI/CD Automation", category: "project", icon: Network, x: 35, y: 15, description: "Automated CI/CD pipelines with testing.", related: ["python", "docker"] },
-  { id: "market", label: "MarketNest", category: "project", icon: Network, x: 50, y: 55, description: "Fashion marketplace platform with automated testing workflows.", related: ["frontend", "backend", "db"] },
 ];
 
-const edges = [
-  // Core domains
-  ["ai", "python"],
-  ["backend", "python"],
-  ["backend", "db"],
-  ["frontend", "react"],
-  ["ai", "rag"],
-  ["backend", "docker"],
-  
-  // Project connections
-  ["ai", "research"],
-  ["rag", "research"],
-  
-  ["ai", "pulse"],
-  ["python", "pulse"],
-  
-  ["frontend", "startup"],
-  ["react", "startup"],
-  
-  ["python", "devops"],
-  ["docker", "devops"],
-  
-  ["frontend", "market"],
-  ["backend", "market"],
-  ["db", "market"]
+const slugify = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+
+const keywordConnections: Array<[RegExp, string[]]> = [
+  [/\bpower\s?bi\b/i, ["db"]],
+  [/\bsql\b/i, ["db", "backend"]],
+  [/\bdax\b/i, ["db"]],
+  [/\bpower\s?query\b/i, ["db"]],
+  [/\breact\b/i, ["frontend", "react"]],
+  [/\bnext\b/i, ["frontend", "react"]],
+  [/\bfastapi\b/i, ["backend"]],
+  [/\bnode\.?js\b/i, ["backend"]],
+  [/\bpython\b/i, ["python", "backend"]],
+  [/\blangchain\b/i, ["ai", "rag"]],
+  [/\bchroma\b/i, ["ai", "db"]],
+  [/\btorch\b/i, ["ai"]],
+  [/\bscikit\b/i, ["ai"]],
+  [/\bfirebase\b/i, ["backend", "db"]],
+  [/\bsupabase\b/i, ["backend", "db"]],
+  [/\bdocker\b/i, ["docker"]],
+  [/\bgit(hub)? actions\b/i, ["docker"]],
 ];
+
+const projectCategoryConnections: Record<string, string[]> = {
+  "AI Systems": ["ai", "rag", "backend"],
+  "AI + Healthcare": ["ai", "python", "backend", "db"],
+  "Full Stack": ["frontend", "backend", "react"],
+  DevOps: ["backend", "docker"],
+  "Data Analytics": ["db", "backend", "python"],
+};
+
+const projectItems = personalData.projects;
+
+const projectNodes: GraphNode[] = projectItems.map((project, index) => {
+  const angle = (index / Math.max(projectItems.length, 1)) * 2 * Math.PI;
+  const radius = 34;
+  const x = 50 + radius * Math.cos(angle);
+  const y = 55 + radius * Math.sin(angle);
+  const projectId = `project-${slugify(project.title)}`;
+  const related = new Set<string>();
+
+  (projectCategoryConnections[project.category || ""] || []).forEach((id) => related.add(id));
+
+  project.techStack.forEach((tech: string) => {
+    keywordConnections.forEach(([pattern, ids]) => {
+      if (pattern.test(tech)) {
+        ids.forEach((id) => related.add(id));
+      }
+    });
+  });
+
+  const descriptionBits = [project.description, project.results, project.approach].filter(Boolean);
+
+  return {
+    id: projectId,
+    label: project.title,
+    category: "project",
+    icon: Network,
+    x,
+    y,
+    description: descriptionBits.join(" "),
+    related: Array.from(related),
+  };
+});
+
+const nodes: GraphNode[] = [...baseNodes, ...projectNodes];
+
+const nodeById = new Map(nodes.map((node) => [node.id, node]));
+
+projectNodes.forEach((projectNode) => {
+  projectNode.related.forEach((targetId) => {
+    const targetNode = nodeById.get(targetId);
+    if (targetNode && !targetNode.related.includes(projectNode.id)) {
+      targetNode.related.push(projectNode.id);
+    }
+  });
+});
+
+const edges = (() => {
+  const edgeSet = new Set<string>();
+  const result: Array<[string, string]> = [];
+
+  nodes.forEach((node) => {
+    node.related.forEach((targetId) => {
+      if (!nodeById.has(targetId)) return;
+      const key = [node.id, targetId].sort().join("|");
+      if (edgeSet.has(key)) return;
+      edgeSet.add(key);
+      result.push([node.id, targetId]);
+    });
+  });
+
+  return result;
+})();
 
 export function KnowledgeGraph() {
   const [searchTerm, setSearchTerm] = useState("");

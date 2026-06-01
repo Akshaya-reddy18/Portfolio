@@ -325,7 +325,7 @@ export function AiChat() {
                 I'm powered by a custom RAG backend using FastAPI and LLMs. I have context on all of Akshaya's projects, skills, and experience. What would you like to know?
               </p>
               <div className="flex flex-col gap-2 w-full">
-                {["Walk me through your multi-agent architecture.", "What impact did PulseConnect have?", "What makes you stand out to a recruiter?"].map(prompt => (
+                 {["Walk me through your multi-agent architecture.", "What impact did PulseConnect have?", "How does the Pizza Sales Analytics Dashboard work?", "What makes you stand out to a recruiter?"].map(prompt => (
                   <button 
                     key={prompt} 
                     onClick={() => { setInput(prompt); setTimeout(() => handleSend({preventDefault: () => {}} as any), 50); }}

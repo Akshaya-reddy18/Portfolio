@@ -24,6 +24,9 @@ export const personalData = {
 // Process JSON
 let projectIndex = 0;
 const categories = new Set<string>();
+const slugify = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+const skillNodeByLabel = new Map<string, string>();
+const categoryNodeByLabel = new Map<string, string>();
 
 portfolioData.forEach((item: any) => {
   if (item.type === "project") {
@@ -31,6 +34,7 @@ portfolioData.forEach((item: any) => {
       id: `project-${projectIndex++}`,
       title: item.title,
       role: item.category || "Engineer",
+      category: item.category || "",
       description: item.description,
       problem: item.challenges || "Solve complex technical challenges.",
       approach: item.details || item.solutions || "",
@@ -86,6 +90,7 @@ categoryList.forEach((cat, index) => {
   
   const node = { id, label: cat, x, y, size: 60, color: colors[index % colors.length], connections: ["core"] };
   primaryNodes.push(node);
+  categoryNodeByLabel.set(cat, id);
   personalData.nodes[0].connections.push(id); // Connect core to category
 });
 
@@ -112,8 +117,46 @@ skillList.forEach((skill, index) => {
   
   // Connect to parent
   parent.connections.push(id);
+  skillNodeByLabel.set(skill, id);
   
   personalData.nodes.push({
     id, label: skill, x, y, size: 40, color: "bg-white/5 border-white/20 text-muted-foreground", connections: [parent.id]
+  });
+});
+
+const projectRadius = 38;
+const projectItems = portfolioData.filter((item: any) => item.type === "project");
+
+projectItems.forEach((item: any, index: number) => {
+  const angle = (index / Math.max(projectItems.length, 1)) * 2 * Math.PI;
+  const x = centerX + projectRadius * Math.cos(angle);
+  const y = centerY + projectRadius * Math.sin(angle);
+  const id = `project-${slugify(item.title)}`;
+
+  const connections = new Set<string>();
+  const categoryId = item.category ? categoryNodeByLabel.get(item.category) : undefined;
+  if (categoryId) {
+    connections.add(categoryId);
+    const categoryNode = personalData.nodes.find(node => node.id === categoryId);
+    categoryNode?.connections.push(id);
+  }
+
+  (item.stack || []).forEach((tech: string) => {
+    const skillId = skillNodeByLabel.get(tech);
+    if (skillId) {
+      connections.add(skillId);
+      const skillNode = personalData.nodes.find(node => node.id === skillId);
+      skillNode?.connections.push(id);
+    }
+  });
+
+  personalData.nodes.push({
+    id,
+    label: item.title,
+    x,
+    y,
+    size: 52,
+    color: "bg-accent/20 border-accent text-accent",
+    connections: Array.from(connections),
   });
 });
